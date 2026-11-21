@@ -385,7 +385,10 @@ class MemoryStore:
             return session.get(ReviewRow, thread_id)
 
     def list_reviews(
-        self, status: str | None = None, limit: int = 100
+        self,
+        status: str | None = None,
+        meeting_id: str | None = None,
+        limit: int = 100,
     ) -> list[ReviewSummary]:
         with self.db.session() as session:
             query = select(ReviewRow, MeetingRow).join(
@@ -393,6 +396,8 @@ class MemoryStore:
             )
             if status:
                 query = query.where(ReviewRow.status == status)
+            if meeting_id:
+                query = query.where(ReviewRow.meeting_id == meeting_id)
             rows = session.execute(
                 query.order_by(ReviewRow.created_at.desc()).limit(limit)
             ).all()

@@ -112,9 +112,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def list_reviews(
         request: Request,
         status: str | None = None,
+        meeting_id: str | None = None,
         limit: Annotated[int, Query(ge=1, le=500)] = 100,
     ) -> list[ReviewSummary]:
-        return get_container(request).memory.list_reviews(status=status, limit=limit)
+        return get_container(request).memory.list_reviews(
+            status=status, meeting_id=meeting_id, limit=limit
+        )
 
     @app.get("/api/reviews/{thread_id}", response_model=ReviewPacket, tags=["reviews"])
     async def get_review(thread_id: str, request: Request) -> ReviewPacket:

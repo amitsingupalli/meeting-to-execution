@@ -157,7 +157,7 @@ Returns one `MeetingView` or `404`.
 
 ## Reviews
 
-### `GET /api/reviews?status=pending&limit=100`
+### `GET /api/reviews?status=pending&meeting_id=...&limit=100`
 
 Returns the review queue as `ReviewSummary[]`, newest first. Use `status=pending` for the review
 inbox and `status=approved` / `status=rejected` for history.

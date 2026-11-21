@@ -83,6 +83,10 @@ def test_ingest_review_and_approve_flow(client: TestClient) -> None:
     assert [review["thread_id"] for review in queue.json()] == [thread_id]
     assert queue.json()[0]["meeting_title"] == "Platform Planning"
     assert client.get("/api/stats").json()["pending_reviews"] == 1
+    by_meeting = client.get(
+        "/api/reviews", params={"meeting_id": "mtg_001_platform_planning"}
+    )
+    assert [review["thread_id"] for review in by_meeting.json()] == [thread_id]
 
     # Nothing is persisted before human approval.
     assert client.get("/api/decisions").json() == []
