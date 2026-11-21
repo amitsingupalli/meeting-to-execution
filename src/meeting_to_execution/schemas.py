@@ -83,13 +83,30 @@ class NormalizedItem(BaseModel):
     flags: list[str] = Field(default_factory=list)
 
 
-class DecisionView(NormalizedItem):
-    status: DecisionStatus
+class DecisionRecord(NormalizedItem):
+    status: DecisionStatus = "active"
     meeting_id: str
-    meeting_title: str | None = None
     meeting_date: date
     created_at: datetime
     supersedes: list[str] = Field(default_factory=list)
+
+
+class DecisionView(DecisionRecord):
+    meeting_title: str | None = None
+
+
+class TaskDraft(BaseModel):
+    id: str
+    meeting_id: str
+    item_id: str
+    title: str
+    body: str
+    owner_id: str | None = None
+    deadline: date | None = None
+    status: TaskStatus = "proposed"
+    dedupe_key: str
+    idempotency_key: str
+    duplicate_of: str | None = None
 
 
 class TaskView(BaseModel):

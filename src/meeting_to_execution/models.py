@@ -42,6 +42,7 @@ class Decision(Base):
 
     id: Mapped[str] = mapped_column(String(80), primary_key=True)
     meeting_id: Mapped[str] = mapped_column(ForeignKey("meetings.id"), index=True)
+    meeting_date: Mapped[date] = mapped_column(Date, index=True)
     type: Mapped[str] = mapped_column(String(32), default="decision")
     subject: Mapped[str] = mapped_column(String(300), index=True)
     attribute: Mapped[str | None] = mapped_column(String(300), nullable=True, index=True)
