@@ -167,6 +167,19 @@ class ReviewPacket(BaseModel):
     generated_at: datetime
 
 
+class ReviewSummary(BaseModel):
+    thread_id: str
+    meeting_id: str
+    meeting_title: str | None = None
+    meeting_date: date | None = None
+    status: str
+    packet_hash: str
+    reviewer: str | None = None
+    note: str | None = None
+    created_at: datetime
+    decided_at: datetime | None = None
+
+
 class EditableDecision(BaseModel):
     subject: str = Field(min_length=1)
     attribute: str | None = None
@@ -281,6 +294,7 @@ class StatsView(BaseModel):
     tasks: int
     posted_tasks: int
     open_conflicts: int
+    pending_reviews: int = 0
 
 
 class HealthView(BaseModel):

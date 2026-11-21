@@ -78,6 +78,12 @@ def test_ingest_review_and_approve_flow(client: TestClient) -> None:
     assert pending.status_code == 200
     assert pending.json()["packet_hash"] == packet["packet_hash"]
 
+    queue = client.get("/api/reviews", params={"status": "pending"})
+    assert queue.status_code == 200
+    assert [review["thread_id"] for review in queue.json()] == [thread_id]
+    assert queue.json()[0]["meeting_title"] == "Platform Planning"
+    assert client.get("/api/stats").json()["pending_reviews"] == 1
+
     # Nothing is persisted before human approval.
     assert client.get("/api/decisions").json() == []
     assert client.get("/api/tasks").json() == []
@@ -88,6 +94,11 @@ def test_ingest_review_and_approve_flow(client: TestClient) -> None:
     assert result["status"] == "approved"
     assert result["decisions_saved"] == 3
     assert result["tasks_posted"] == 3
+
+    assert client.get("/api/reviews", params={"status": "pending"}).json() == []
+    decided = client.get("/api/reviews", params={"status": "approved"}).json()
+    assert decided[0]["thread_id"] == thread_id
+    assert decided[0]["decided_at"] is not None
 
     decisions = client.get("/api/decisions").json()
     assert len(decisions) == 3

@@ -31,6 +31,7 @@ from .schemas import (
     NotificationView,
     ReminderView,
     ReviewSubmission,
+    ReviewSummary,
     StatsView,
     TaskDraft,
     TaskView,
@@ -383,6 +384,34 @@ class MemoryStore:
         with self.db.session() as session:
             return session.get(ReviewRow, thread_id)
 
+    def list_reviews(
+        self, status: str | None = None, limit: int = 100
+    ) -> list[ReviewSummary]:
+        with self.db.session() as session:
+            query = select(ReviewRow, MeetingRow).join(
+                MeetingRow, MeetingRow.id == ReviewRow.meeting_id
+            )
+            if status:
+                query = query.where(ReviewRow.status == status)
+            rows = session.execute(
+                query.order_by(ReviewRow.created_at.desc()).limit(limit)
+            ).all()
+            return [
+                ReviewSummary(
+                    thread_id=review.thread_id,
+                    meeting_id=review.meeting_id,
+                    meeting_title=meeting.title,
+                    meeting_date=meeting.meeting_date,
+                    status=review.status,
+                    packet_hash=review.packet_hash,
+                    reviewer=review.reviewer,
+                    note=review.note,
+                    created_at=_aware(review.created_at),
+                    decided_at=_aware(review.decided_at),
+                )
+                for review, meeting in rows
+            ]
+
     # ------------------------------------------------------------------
     # Tasks
     # ------------------------------------------------------------------
@@ -716,6 +745,14 @@ class MemoryStore:
                 )
                 or 0
             )
+            pending_reviews = (
+                session.scalar(
+                    select(func.count())
+                    .select_from(ReviewRow)
+                    .where(ReviewRow.status == "pending")
+                )
+                or 0
+            )
         return StatsView(
             meetings=meetings,
             active_decisions=active,
@@ -723,6 +760,7 @@ class MemoryStore:
             tasks=tasks,
             posted_tasks=posted,
             open_conflicts=conflicts,
+            pending_reviews=pending_reviews,
         )
 
     # ------------------------------------------------------------------

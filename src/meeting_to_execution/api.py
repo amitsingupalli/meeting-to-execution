@@ -25,6 +25,7 @@ from .schemas import (
     ReviewPacket,
     ReviewResult,
     ReviewSubmission,
+    ReviewSummary,
     StatsView,
     TaskView,
 )
@@ -106,6 +107,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if not meeting:
             raise HTTPException(status_code=404, detail="meeting not found")
         return meeting
+
+    @app.get("/api/reviews", response_model=list[ReviewSummary], tags=["reviews"])
+    def list_reviews(
+        request: Request,
+        status: str | None = None,
+        limit: Annotated[int, Query(ge=1, le=500)] = 100,
+    ) -> list[ReviewSummary]:
+        return get_container(request).memory.list_reviews(status=status, limit=limit)
 
     @app.get("/api/reviews/{thread_id}", response_model=ReviewPacket, tags=["reviews"])
     async def get_review(thread_id: str, request: Request) -> ReviewPacket:
