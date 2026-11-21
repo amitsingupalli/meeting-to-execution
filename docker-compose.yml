@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: docker
+      DATABASE_URL: sqlite:////app/data/mte.db
+      CHECKPOINT_DB: /app/data/checkpoints.db
+      ENABLE_SCHEDULER: "true"
+      TRACKER_BACKEND: mock
+      VECTOR_BACKEND: local
+      CORS_ORIGINS: http://localhost:3000,http://localhost:5173
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

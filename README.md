@@ -141,6 +141,16 @@ This ingests and auto-approves the four synthetic meetings through the same pipe
 CI runs lint, tests, and the golden-set evaluation on every push and pull request
 (`.github/workflows/ci.yml`).
 
+### Run with Docker
+
+```bash
+docker compose up --build
+```
+
+The API is available at `http://localhost:8000/docs`, and SQLite data persists in `./data`. The
+container installs the optional LLM extra, so set `LLM_API_KEY` (and related variables) in a `.env`
+file or compose environment to enable it. Run a single scheduler instance per database.
+
 ---
 
 ## Demo: what to look for
