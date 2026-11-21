@@ -542,7 +542,25 @@ def build_checkpointer(path: str | Path) -> tuple[SqliteSaver, sqlite3.Connectio
     target = Path(path).expanduser().resolve()
     target.parent.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(target, check_same_thread=False)
-    serde = JsonPlusSerializer(allowed_msgpack_modules=True)
+    allowed = [
+        ("meeting_to_execution.schemas", name)
+        for name in (
+            "MeetingCreate",
+            "MeetingView",
+            "NormalizedItem",
+            "DecisionRecord",
+            "DecisionView",
+            "TaskDraft",
+            "TaskView",
+            "CandidateView",
+            "ConflictView",
+            "ReviewPacket",
+            "ReviewDecisionView",
+            "ReviewConflictView",
+            "ReviewSubmission",
+        )
+    ]
+    serde = JsonPlusSerializer(allowed_msgpack_modules=allowed)
     saver = SqliteSaver(connection, serde=serde)
     saver.setup()
     return saver, connection

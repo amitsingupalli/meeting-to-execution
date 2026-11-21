@@ -509,10 +509,28 @@ class MemoryStore:
     # ------------------------------------------------------------------
     # Conflicts
     # ------------------------------------------------------------------
-    def list_conflicts(self, limit: int = 200) -> list[ConflictView]:
+    def list_conflicts(
+        self,
+        limit: int = 200,
+        meeting_id: str | None = None,
+        decision_id: str | None = None,
+        relation: str | None = None,
+    ) -> list[ConflictView]:
         with self.db.session() as session:
+            query = select(ConflictRow)
+            if meeting_id:
+                query = query.where(ConflictRow.meeting_id == meeting_id)
+            if decision_id:
+                query = query.where(
+                    or_(
+                        ConflictRow.new_item_id == decision_id,
+                        ConflictRow.old_decision_id == decision_id,
+                    )
+                )
+            if relation:
+                query = query.where(ConflictRow.relation == relation)
             rows = session.scalars(
-                select(ConflictRow).order_by(ConflictRow.created_at.desc()).limit(limit)
+                query.order_by(ConflictRow.created_at.desc()).limit(limit)
             ).all()
             return [
                 ConflictView(
