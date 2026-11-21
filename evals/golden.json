@@ -1,0 +1,186 @@
+{
+  "meetings": [
+    {
+      "file": "01_platform_planning.json",
+      "decisions": [
+        {
+          "subject": "database",
+          "attribute": "primary database",
+          "value": "Postgres"
+        },
+        {
+          "subject": "deployment",
+          "attribute": "cloud provider",
+          "value": "AWS in us-east-1"
+        },
+        {
+          "subject": "beta launch",
+          "attribute": "launch date",
+          "value": "December 4"
+        }
+      ],
+      "actions": [
+        {
+          "subject": "draft the schema",
+          "owner": "usr_priya",
+          "deadline": "2026-11-06"
+        },
+        {
+          "subject": "benchmark Postgres",
+          "owner": "usr_marcus",
+          "deadline": "2026-11-09"
+        },
+        {
+          "subject": "investigate authentication options",
+          "owner": null,
+          "deadline": null
+        }
+      ],
+      "forbidden_subjects": []
+    },
+    {
+      "file": "02_platform_followup.json",
+      "decisions": [
+        {
+          "subject": "Postgres migration",
+          "attribute": "timeline",
+          "value": "delayed by two weeks"
+        },
+        {
+          "subject": "caching",
+          "attribute": "cache provider",
+          "value": "Redis"
+        },
+        {
+          "subject": "beta launch",
+          "attribute": "launch date",
+          "value": "December 4"
+        }
+      ],
+      "actions": [
+        {
+          "subject": "finish the benchmark",
+          "owner": "usr_marcus",
+          "deadline": "2026-11-16"
+        },
+        {
+          "subject": "draft the schema",
+          "owner": "usr_priya",
+          "deadline": "2026-11-06"
+        }
+      ],
+      "forbidden_subjects": []
+    },
+    {
+      "file": "03_architecture_review.json",
+      "decisions": [
+        {
+          "subject": "database",
+          "attribute": "primary database",
+          "value": "MySQL"
+        },
+        {
+          "subject": "deployment",
+          "attribute": "cloud provider",
+          "value": "AWS in us-east-1"
+        },
+        {
+          "subject": "beta launch",
+          "attribute": "launch date",
+          "value": "December 18"
+        }
+      ],
+      "actions": [
+        {
+          "subject": "update the migration plan",
+          "owner": "usr_priya",
+          "deadline": "2026-11-23"
+        },
+        {
+          "subject": "ask security to review Auth0",
+          "owner": "usr_priya",
+          "deadline": "2026-11-30"
+        }
+      ],
+      "forbidden_subjects": [
+        "caching"
+      ]
+    },
+    {
+      "file": "04_security_launch.json",
+      "decisions": [
+        {
+          "subject": "authentication",
+          "attribute": "auth provider",
+          "value": "Auth0"
+        },
+        {
+          "subject": "beta launch",
+          "attribute": "launch date",
+          "value": "December 18"
+        },
+        {
+          "subject": "caching",
+          "attribute": "cache provider",
+          "value": "the database-backed cache"
+        }
+      ],
+      "actions": [
+        {
+          "subject": "remove the Redis dependency",
+          "owner": "usr_marcus",
+          "deadline": "2026-11-27"
+        },
+        {
+          "subject": "send the launch checklist",
+          "owner": "usr_priya",
+          "deadline": "2026-12-11"
+        },
+        {
+          "subject": "update the runbook",
+          "owner": null,
+          "deadline": null
+        }
+      ],
+      "forbidden_subjects": []
+    }
+  ],
+  "conflicts": [
+    {
+      "file": "02_platform_followup.json",
+      "subject": "beta launch",
+      "old_value": "December 4",
+      "relation": "duplicates"
+    },
+    {
+      "file": "03_architecture_review.json",
+      "subject": "database",
+      "old_value": "Postgres",
+      "relation": "contradicts"
+    },
+    {
+      "file": "03_architecture_review.json",
+      "subject": "deployment",
+      "old_value": "AWS in us-east-1",
+      "relation": "duplicates"
+    },
+    {
+      "file": "03_architecture_review.json",
+      "subject": "beta launch",
+      "old_value": "December 4",
+      "relation": "refines"
+    },
+    {
+      "file": "04_security_launch.json",
+      "subject": "beta launch",
+      "old_value": "December 18",
+      "relation": "duplicates"
+    },
+    {
+      "file": "04_security_launch.json",
+      "subject": "caching",
+      "old_value": "Redis",
+      "relation": "contradicts"
+    }
+  ]
+}

@@ -47,8 +47,10 @@ class Container:
         memory = MemoryStore(db, vector, embeddings)
         extractor = build_extractor(settings)
         judge = build_judge(settings)
-        tracker = build_tracker(settings)
-        notifier = NotificationService(memory)
+        tracker = build_tracker(settings, data_dir=settings.sqlite_path.parent)
+        notifier = NotificationService(
+            memory, settings.sqlite_path.parent / "notifications.log"
+        )
         reminders = ReminderService(
             memory, notifier, hours_before=settings.reminder_hours_before
         )

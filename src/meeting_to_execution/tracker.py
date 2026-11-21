@@ -147,7 +147,8 @@ class GitHubTracker:
         )
 
 
-def build_tracker(settings: Settings) -> Tracker:
+def build_tracker(settings: Settings, data_dir: str | Path | None = None) -> Tracker:
     if settings.tracker_backend == "github":
         return GitHubTracker(settings)
-    return MockTracker()
+    target = Path(data_dir or "./data") / "mock_tracker.json"
+    return MockTracker(target)

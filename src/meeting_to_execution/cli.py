@@ -9,6 +9,7 @@ import uvicorn
 from .config import get_settings
 from .container import Container
 from .demo import run_demo
+from .evals import DEFAULT_FIXTURES, DEFAULT_GOLDEN, run_evals
 from .schemas import (
     DecisionReviewInput,
     MeetingCreate,
@@ -89,6 +90,9 @@ def main() -> None:
     serve.add_argument("--reload", action="store_true")
     subparsers.add_parser("demo", help="Run the four-meeting end-to-end demo")
     subparsers.add_parser("seed", help="Ingest and approve the fixture meetings")
+    evals = subparsers.add_parser("eval", help="Run the golden-set evaluation")
+    evals.add_argument("--fixtures", default=str(DEFAULT_FIXTURES))
+    evals.add_argument("--golden", default=str(DEFAULT_GOLDEN))
 
     args = parser.parse_args()
     if args.command == "init":
@@ -99,3 +103,7 @@ def main() -> None:
         run_demo()
     elif args.command == "seed":
         _seed()
+    elif args.command == "eval":
+        report = run_evals(args.fixtures, args.golden)
+        print(json.dumps(report.model_dump(), indent=2))
+        raise SystemExit(0 if report.passed else 1)
