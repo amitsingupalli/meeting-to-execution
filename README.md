@@ -125,6 +125,22 @@ uv run mte seed
 
 This ingests and auto-approves the four synthetic meetings through the same pipeline the API uses.
 
+### Developer commands
+
+| Command | Purpose |
+| --- | --- |
+| `make install` | Install runtime, LLM, and dev dependencies |
+| `make lint` | Ruff lint |
+| `make test` | Pytest suite |
+| `make eval` | Golden-set evaluation |
+| `make demo` | Four-meeting demo |
+| `make seed` | Ingest and approve fixtures |
+| `make serve` | FastAPI with reload |
+| `make check` | Lint + tests + eval |
+
+CI runs lint, tests, and the golden-set evaluation on every push and pull request
+(`.github/workflows/ci.yml`).
+
 ---
 
 ## Demo: what to look for
