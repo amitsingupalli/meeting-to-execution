@@ -200,7 +200,7 @@ class MemoryStore:
         limit: int = 200,
     ) -> list[DecisionView]:
         with self.db.session() as session:
-            query = select(DecisionRow).join(
+            query = select(DecisionRow, MeetingRow).join(
                 MeetingRow, MeetingRow.id == DecisionRow.meeting_id
             )
             if status:
@@ -451,6 +451,11 @@ class MemoryStore:
             session.flush()
             return self._task_view(session, row)
 
+    def get_task(self, task_id: str) -> TaskView | None:
+        with self.db.session() as session:
+            row = session.get(TaskRow, task_id)
+            return self._task_view(session, row) if row else None
+
     def list_tasks(
         self,
         status: str | None = None,
@@ -554,11 +559,30 @@ class MemoryStore:
             ).all()
             return [self._reminder_view(row) for row in rows]
 
+    def pending_reminders(self, now: datetime, limit: int = 200) -> list[ReminderView]:
+        with self.db.session() as session:
+            rows = session.scalars(
+                select(ReminderRow)
+                .where(
+                    ReminderRow.status == "scheduled",
+                    ReminderRow.scheduled_for <= now,
+                )
+                .order_by(ReminderRow.scheduled_for)
+                .limit(limit)
+            ).all()
+            return [self._reminder_view(row) for row in rows]
+
     def mark_reminder_sent(self, reminder_id: int) -> None:
         with self.db.session() as session:
             row = session.get(ReminderRow, reminder_id)
             if row:
                 row.status = "sent"
+                row.sent_at = datetime.now(UTC)
+
+    def mark_digest_sent(self, digest_id: int) -> None:
+        with self.db.session() as session:
+            row = session.get(DigestRow, digest_id)
+            if row:
                 row.sent_at = datetime.now(UTC)
 
     def save_digest(
