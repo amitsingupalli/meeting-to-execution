@@ -1,0 +1,11 @@
+{
+  "meeting_id": "mtg_004_security_launch",
+  "title": "Security and Launch Sync",
+  "meeting_date": "2026-11-20",
+  "attendees": [
+    {"id": "usr_priya", "name": "Priya", "aliases": ["Priya Sharma"], "email": "priya@example.com"},
+    {"id": "usr_marcus", "name": "Marcus", "aliases": ["Marcus Lee"], "email": "marcus@example.com"},
+    {"id": "usr_elena", "name": "Elena", "aliases": ["Elena Ruiz"], "email": "elena@example.com"}
+  ],
+  "transcript": "[00:00] Priya: Security and launch sync. We'll use Auth0 for authentication.\n[00:16] Marcus: The beta launch is confirmed for December 18.\n[00:29] Priya: We're not using Redis for caching anymore. We'll use the database-backed cache instead.\n[00:46] Marcus: I'll remove the Redis dependency by November 27.\n[00:58] Priya: I'll send the launch checklist by December 11.\n[01:10] Elena: Someone should update the runbook before launch."
+}

@@ -1,0 +1,11 @@
+{
+  "meeting_id": "mtg_002_platform_followup",
+  "title": "Platform Follow-up",
+  "meeting_date": "2026-11-09",
+  "attendees": [
+    {"id": "usr_priya", "name": "Priya", "aliases": ["Priya Sharma"], "email": "priya@example.com"},
+    {"id": "usr_marcus", "name": "Marcus", "aliases": ["Marcus Lee"], "email": "marcus@example.com"},
+    {"id": "usr_elena", "name": "Elena", "aliases": ["Elena Ruiz"], "email": "elena@example.com"}
+  ],
+  "transcript": "[00:00] Priya: Quick follow-up. The Postgres migration is delayed by two weeks because of the vendor review.\n[00:22] Marcus: That's a schedule change, not a database change. We're still using Postgres.\n[00:38] Priya: Right. We'll use Redis for caching.\n[00:52] Marcus: I'll finish the benchmark by November 16.\n[01:05] Priya: I'll draft the schema by November 6.\n[01:18] Elena: The beta launch is scheduled for December 4. Keep that date for now."
+}

@@ -1,0 +1,11 @@
+{
+  "meeting_id": "mtg_001_platform_planning",
+  "title": "Platform Planning",
+  "meeting_date": "2026-11-02",
+  "attendees": [
+    {"id": "usr_priya", "name": "Priya", "aliases": ["Priya Sharma"], "email": "priya@example.com"},
+    {"id": "usr_marcus", "name": "Marcus", "aliases": ["Marcus Lee"], "email": "marcus@example.com"},
+    {"id": "usr_elena", "name": "Elena", "aliases": ["Elena Ruiz"], "email": "elena@example.com"}
+  ],
+  "transcript": "[00:00] Priya: Let's start the platform planning meeting. We need to settle the database and deployment choices.\n[00:18] Marcus: I think Postgres is a strong option.\n[00:24] Priya: Maybe Postgres? We should compare it with MySQL.\n[00:41] Marcus: We'll go with Postgres as the primary database. It gives us the extensions we need.\n[00:58] Priya: Agreed. We'll deploy on AWS in us-east-1.\n[01:12] Priya: I'll draft the schema by November 6.\n[01:25] Marcus: I will benchmark Postgres by November 9.\n[01:39] Priya: Someone should investigate authentication options before the next meeting.\n[01:52] Marcus: The beta launch is scheduled for December 4. Let's lock that."
+}

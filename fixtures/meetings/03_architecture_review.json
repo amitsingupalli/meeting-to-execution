@@ -1,0 +1,11 @@
+{
+  "meeting_id": "mtg_003_architecture_review",
+  "title": "Architecture Review",
+  "meeting_date": "2026-11-16",
+  "attendees": [
+    {"id": "usr_priya", "name": "Priya", "aliases": ["Priya Sharma"], "email": "priya@example.com"},
+    {"id": "usr_marcus", "name": "Marcus", "aliases": ["Marcus Lee"], "email": "marcus@example.com"},
+    {"id": "usr_elena", "name": "Elena", "aliases": ["Elena Ruiz"], "email": "elena@example.com"}
+  ],
+  "transcript": "[00:00] Priya: Architecture review. We need to revisit the database decision.\n[00:14] Marcus: The vendor review changed things. We will not use Postgres as the primary database. We'll go with MySQL instead.\n[00:38] Priya: That reverses the November decision. We'll keep AWS in us-east-1.\n[00:52] Marcus: The beta launch moves to December 18.\n[01:06] Priya: I'll update the migration plan by November 23.\n[01:18] Priya: I'll ask security to review Auth0 by November 30.\n[01:30] Elena: Maybe we should revisit caching too? Let's not decide today."
+}

@@ -23,6 +23,18 @@ def quote_is_present(quote: str, transcript: str) -> bool:
     return bool(normalized_quote) and normalized_quote in norm_text(transcript)
 
 
+EXPLICIT_DATE_RE = re.compile(
+    r"\b(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|"
+    r"jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|"
+    r"dec(?:ember)?|\d{1,2}/\d{1,2})\b",
+    re.IGNORECASE,
+)
+RELATIVE_DATE_RE = re.compile(
+    r"\b(?:next|this|coming|tomorrow|today|tonight|end of|in\s+\d+)\b",
+    re.IGNORECASE,
+)
+
+
 def resolve_deadline(raw: str | None, meeting_date: date) -> date | None:
     """Resolve a relative deadline against the meeting date, never today."""
     if not raw or not raw.strip():
@@ -38,6 +50,15 @@ def resolve_deadline(raw: str | None, meeting_date: date) -> date | None:
     )
     if not parsed:
         return None
+    if EXPLICIT_DATE_RE.search(raw) and not RELATIVE_DATE_RE.search(raw):
+        # Pick the occurrence closest to the meeting date. This keeps
+        # "November 6" in a November 9 meeting as a past deadline to flag,
+        # while "January 9" in November resolves to the next January.
+        candidates = [
+            date(parsed.year + offset, parsed.month, parsed.day)
+            for offset in (-1, 0, 1)
+        ]
+        return min(candidates, key=lambda candidate: abs((candidate - meeting_date).days))
     return parsed.date()
 
 
